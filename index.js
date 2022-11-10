@@ -37,12 +37,25 @@ async function run() {
             const services = await cursor.toArray();
             res.send(services);
         });
-        app.get('/service/:id', async (req, res) => {
+        app.post('/service', async (req, res) => {
+            const service = req.body;
+            console.log(service);
+            const result = await serviceCollection.insertOne(service);
+            res.send(result);
+        });
+        app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const service = await serviceCollection.findOne(query);
             res.send(service);
         });
+
+        // app.post('/services', async(res, req) => {
+        //     const services = req.body;
+        //     console.log(services)
+        //     const result = await serviceCollection.insertOne(services);
+        //     res.send(result);
+        // })
 
         // reviews api
         app.get('/reviews', async (req, res) => {
@@ -71,6 +84,7 @@ async function run() {
 
         app.post('/reviews', async (req, res) => {
             const review = req.body;
+            console.log(review)
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         });
